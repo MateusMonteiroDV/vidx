@@ -8,7 +8,6 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -16,5 +15,7 @@
     "knex": "^3.1.0",
     "psql": "^0.0.1",
     "url": "^0.11.4"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
