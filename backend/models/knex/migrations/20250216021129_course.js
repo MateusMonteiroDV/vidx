@@ -8,6 +8,7 @@ exports.up = function(knex) {
   	t.uuid('id_course').primary().notNullable()
   	t.string('title').notNullable();
   	t.string('description').notNullable();
+    t.string('image_url').nullable();
   	t.uuid('id_user').notNullable();
     t.foreign('id_user').references('id_user').inTable('user');
   })

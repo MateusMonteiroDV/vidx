@@ -16,8 +16,8 @@ module.exports = {
     },
 
     migrations:{
-      directory: './models/knex/migrations'
-
+      directory: './models/knex/migrations',
+      schemaName: 'public',
     }
   },
 

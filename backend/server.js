@@ -5,12 +5,13 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const path = require('path')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/user.js')
 
 app.use(cors())
  
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
