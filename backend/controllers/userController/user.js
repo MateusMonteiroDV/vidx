@@ -104,7 +104,7 @@ module.exports = {
 	refresh: async (req,res)=>{
 		try{
 			
-			console.log(req.cookies['jwt'])
+			
 			const refreshToken = req.cookies['jwt']
 			
 			if(!refreshToken){
@@ -124,6 +124,80 @@ module.exports = {
 		console.log("Message erro " + err)
 		res.status(500).json({message:'Error from the server'})
 	}	
+	},
+
+	validateInstructorForm: async (req,res)=>{
+	try{	
+
+		const {id_user} = req.user
+		const {title_course, desc_course} = req.body.data
+		console.log(title_course)
+		const image_url = req.file.path
+		if (!title_course || !desc_course) {
+    		return res.status(400)
+    		.json(
+    			{
+    			 message: 'Title and description are required' 
+
+    			});
+   		}
+			
+   		const existCourse = await db('course')
+		.where('title', title_course)
+		.first()
+		
+		if(existCourse){
+			return res.status(400).json({message:'Title course alredy exist'})
+		}	
+
+	
+
+
+		const updatedUser =await db('user')
+			.update({isAdmin: true})
+			.where('id_user',id_user)
+			.returning('*');
+
+		if (!updatedUser || updatedUser.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+		const admin = updatedUser[0]	
+
+		const updatedCourse =await db('course').insert({
+			id_course: uuid.v4(),
+			title: title_course,
+			description:desc_course,
+			image: image_url,
+			id_user: admin.id_user,
+
+		}).returning('*')
+
+		if(!updatedCourse  || updatedCourse .length == 0){
+			return res.status(500).json({message:'Failed to create course'})
+		}
+
+		const course = updatedCourse[0]
+
+		return res.status(200).json(
+			{
+				message:'Validation sucess',
+			    id_course: course.id_course,
+				title: course.title,
+				image: course.image || 'default_image_url'
+		})
+
+
+	}catch(err){
+		console.log(err)
+		return res.status(500).json(
+			{
+				message: 'Error from the server',
+				err: err.message
+			})
+	}	
+
+
 	}
 
 
