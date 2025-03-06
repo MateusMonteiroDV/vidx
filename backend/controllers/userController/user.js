@@ -147,7 +147,7 @@ module.exports = {
 		.first()
 		
 		if(existCourse){
-			return res.status(400).json({message:'Title course alredy exist'})
+			return res.status(400).json({message:'Title course already exist'})
 		}	
 
 	
