@@ -131,7 +131,7 @@ module.exports = {
 
 		const {id_user} = req.user
 		const {title_course, desc_course} = req.body.data
-		console.log(title_course)
+		
 		const image_url = req.file.path
 		if (!title_course || !desc_course) {
     		return res.status(400)
