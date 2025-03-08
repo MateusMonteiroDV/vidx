@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser')
 
 const userRouter = require('./routes/user.js')
 const courseRouter = require('./routes/course.js')
+const auth = require('./middlewares/auth.js')
 
 app.use(cors())
  
@@ -20,7 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(express.static(path.join(__dirname, 'public'))); 
+
 app.use('/video', express.static(path.join(__dirname,'public','uploads')));
+
 
 app.use('/api', userRouter)
 app.use('/api', courseRouter)
