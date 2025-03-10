@@ -14,7 +14,7 @@ exports.up = function (knex) {
  */
 exports.down = async function (knex) {
   // Check if the column exists before dropping it
-  const columnExists = await knex.schema.hasColumn('course', 'image');
+  const columnExists =  knex.schema.hasColumn('course', 'image');
   if (columnExists) {
     return knex.schema.alterTable('course', (t) => {
       t.dropColumn('image'); // Drop the `image` column
