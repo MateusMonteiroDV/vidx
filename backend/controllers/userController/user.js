@@ -133,6 +133,7 @@ module.exports = {
 		const {title_course, desc_course} = req.body.data
 		
 		const image_url = req.file.path
+		
 		if (!title_course || !desc_course) {
     		return res.status(400)
     		.json(

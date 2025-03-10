@@ -1,101 +1,100 @@
-const db = require('../../models/knex/knex.js')
-const uuid = require('uuid')
-const path = require('path')
-const fs = require('fs')
+const db = require('../../models/knex/knex.js');
+const uuid = require('uuid');
+const { s3Client } = require('../../utils.js');
+const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const { Upload } = require('@aws-sdk/lib-storage');
 
 module.exports = {
-
-uploadingVideo: async (req, res) => {
-
-
-try {
-  const { title } = req.body.data;
-  console.log(title)
-  const { id_user } = req.user;
-  const user = await db('user').where('id_user', id_user)
-  .first() 
-  
-
-  if(!user.isAdmin){
-    return res.status(400).json({ error: 'Uhnatorized.' });
-
-  }  
-
-  if (!req.file) {
-    return res.status(400).json({ error: 'No video file uploaded.' });
-  }
-  const course = await db('course')
-    .where('id_user', id_user)
-    .andWhere('title', title.trim()) 
-    .first()
-    
-    if (!course) {
-    
-      return res.status(400).json({ 
-      	message: 'It is not possible to upload video, course does not exist.' });
-    }
-
-
-    
-    const fileName = path.basename(req.file.path)
-    const link = `http://localhost:${process.env.PORT}/video/${fileName}`;
-
-   
-    await db('lesson').insert({
-      id_lesson: uuid.v4(),
-      video_url: link,
-      id_course: course.id_course,
-    });
-
-   
-    res.status(200).json({
-      message: 'Video uploaded successfully',
-      link: link
-    });
-  } catch (error) {
-    console.error('Error during file upload:', error);
-    res.status(500).json({ error: 'An error occurred while uploading the video.' });
-  }
-},
-deleteVideo: async (req, res) => {
+  uploadingVideo: async (req, res) => {
     try {
-        const { id_user } = req.user;
-        const user = await db('user')
-            .where('id_user', id_user)
-            .first();
+      const { title } = req.body.data;
+      const { id_user } = req.user;
+      const user = await db('user').where('id_user', id_user).first();
 
-        if (!user.isAdmin) {
-            return res.status(403).json({ message: "You don't have permission to delete videos" });
-        }
+      if (!user.isAdmin) {
+        return res.status(400).json({ error: 'Unauthorized.' });
+      }
 
-        const {filename } = req.params;
-        const videoId = filename;
+      if (!req.file) {
+        return res.status(400).json({ error: 'No video file uploaded.' });
+      }
 
-        const lesson = await db('lesson')
-            .where('video_url', 'like', `%${videoId}%`)
-             .first();
+      const course = await db('course')
+        .where('id_user', id_user)
+        .andWhere('title', title.trim())
+        .first();
 
-        if (!lesson) {
-            return res.status(404).json({ message: 'Video does not exist' });
-        }
+      if (!course) {
+        return res.status(400).json({ message: 'It is not possible to upload video, course does not exist.' });
+      }
 
-        const videoPath =  path.join(__dirname, '..','..', 'public', 'uploads', filename);
+      const fileName = `${Date.now()}-${req.file.originalname.replace(/\s+/g, '-')}`;
+      const s3Key = `videos/${fileName}`;
 
-        if (fs.existsSync(videoPath)) {
-            fs.unlinkSync(videoPath);
-        } else {
-            console.warn(`File not found: ${videoPath}`);
-        }
+      const upload = new Upload({
+        client: s3Client,
+        params: {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: s3Key,
+          Body: req.file.buffer,
+          ContentType: req.file.mimetype,
+        },
+      });
 
-        await db('lesson')
-            .where('id_lesson', lesson.id_lesson)
-            .del();
+      const result = await upload.done();
 
-        return res.status(200).json({ message: 'Video deleted successfully' });
+      await db('lesson').insert({
+        id_lesson: uuid.v4(),
+        s3_key: s3Key,
+        id_course: course.id_course,
+      });
 
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Error from the server: ' + err.message });
+      res.status(200).json({
+        message: 'Video uploaded successfully',
+        s3_key: s3Key,
+      });
+    } catch (error) {
+      console.error('Error during file upload:', error);
+      res.status(500).json({ error: 'An error occurred while uploading the video.' });
     }
-},
-}
+  },
+
+  getVideo: async (req, res) => {
+    const { key } = req.params;
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `videos/${key}`,
+    });
+
+    try {
+      const url = await getSignedUrl(s3Client, command, { expiresIn: 5000 });
+
+      if (!url) {
+        return res.status(400).json({ message: 'Failed to generate pre-signed URL' });
+      }
+
+      return res.status(200).json({ url });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error from the server: ' + err.message });
+    }
+  },
+
+  deleteVideo: async (req, res) => {
+    const { key } = req.params;
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `videos/${key}`,
+    });
+
+    try {
+      await s3Client.send(command);
+      return res.status(200).json({ message: 'Video deleted successfully' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error from the server: ' + err.message });
+    }
+  },
+};

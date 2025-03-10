@@ -1,12 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
 const course = require('../controllers/courseController/course.js') 
-const {upload} = require('../middlewares/multerVideos.js')
 const auth = require('../middlewares/auth.js')
+const multer = require('multer')
+const {upload} = require('../middlewares/multerVideo.js')
 
-router.post('/uploadingVideo',auth.authenticationJwt,
-	upload.single('video'),course.uploadingVideo)
+
+router.get('/video/:key',auth.authenticationJwt, course.getVideo)
+router.delete('/video/:key', auth.authenticationJwt, course.deleteVideo)
+router.post('/uploadingVideo',
+	auth.authenticationJwt,upload.single('video'),
+	course.uploadingVideo)
 
 router.delete('/deleteVideo/:filename',auth.authenticationJwt,course.deleteVideo)
 
