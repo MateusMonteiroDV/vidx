@@ -5,12 +5,18 @@ import { Label } from "../../components/ui/label.jsx";
 import { Input } from "../../components/ui/input.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useState } from "react";
-import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
+
+import {useDispatch} from 'react-redux'
+import {setCredentials} from "../../context/authSlice.js";
+import {useRegistrationMutation} from "../../context/authApiSlice.js";
 
 export default function RegistrationPage() {
   const [name,setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [signup, { isLoading }] = useRegistrationMutation();
+  const dispatch = useDispatch()
 
   function handleName(e){
   	setName(e.target.value)
@@ -24,27 +30,26 @@ export default function RegistrationPage() {
     setPassword(e.target.value);
   }
 
+  const navigate = useNavigate()
+
  async function handleSubmit(e) {
   e.preventDefault();
 
-  const options = {
-    method: "POST",
-    url: "http://localhost:5000/api/signup", 
-    headers: {
-      "Content-Type": "application/json", 
-    },
-    data: JSON.stringify({name, email, password }), 
-  };
+  const body = {
+    name: name,
+    email: email,
+    password:password
+  }
 
   try {
-    const response = await axios(options);
-    console.log("Response:", response.data); 
+    const response = await signup(body).unwrap(); 
+    dispatch(setCredentials({ token: response.token }));
+    console.log(response);
 
-    
-    alert("Registration successful!");
+    navigate('/home');
    } catch (error) {
     console.error("Error:", error.response?.data || error.message);
-    alert(error.response?.data?.message || "Registration failed");
+    
   }
 }
 
