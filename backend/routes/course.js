@@ -12,8 +12,6 @@ router.post('/uploadingVideo',
 	auth.authenticationJwt,upload.single('video'),
 	course.uploadingVideo)
 
-router.delete('/deleteVideo/:filename',auth.authenticationJwt,course.deleteVideo)
-
 
 
 
