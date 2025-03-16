@@ -47,7 +47,7 @@ module.exports = {
 
 	 })
 
-		res.status(200).json({user:new_user, token:token})	
+		res.status(200).json({ token:token})	
 
 	}catch(err){
 		console.log(err)
