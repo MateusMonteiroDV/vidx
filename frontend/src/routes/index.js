@@ -9,6 +9,8 @@ import { isAuthenticated } from "./helper";
 import Home from "../pages/home";
 import Login from "../pages/loginPage";
 import Signup from "../pages/registrationPage";
+import InstructorForm from "../pages/formInstructor"
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,18 +19,19 @@ const router = createBrowserRouter(
         element={<Protected />}
       >
 
-        <Route path= "/home" element={<Home />} />
+       
+        <Route  path= "home"  element={<Home />} />
+        <Route path= "/instructor" element={<InstructorForm />} />
       
       </Route>
       <Route
         path="login"
         element={<Login />}
-        loader={async () => await isAuthenticated()}
+      
       />
       <Route
         path="signup"
         element={<Signup />}
-        loader={async () => await isAuthenticated()}
       />
     
     </Route>
