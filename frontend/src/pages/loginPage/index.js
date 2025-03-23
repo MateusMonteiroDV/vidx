@@ -53,7 +53,7 @@ const navigate = useNavigate()
   return (
     <Card className="mx-auto min-w-[500px] p-8">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-4xl font-bold">Signup</CardTitle>
+        <CardTitle className="text-4xl font-bold">Signin</CardTitle>
         <CardDescription className="text-lg">
           Enter your email and password to register to your account
         </CardDescription>
@@ -85,7 +85,7 @@ const navigate = useNavigate()
             />
           </div>
           <Button type="submit" className="w-full py-4 text-xl">
-            Cadastrar
+            login
           </Button>
         </form>
       </CardContent>
