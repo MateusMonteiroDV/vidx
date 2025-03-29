@@ -10,31 +10,27 @@ import Home from "../pages/home";
 import Login from "../pages/loginPage";
 import Signup from "../pages/registrationPage";
 import InstructorForm from "../pages/formInstructor"
-
+import CreateCourse from "../pages/createCourse"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
-      <Route
-        element={<Protected />}
-      >
+   <>
+      
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-       
-        <Route  path= "home"  element={<Home />} />
-        <Route path= "/instructor" element={<InstructorForm />} />
+   <Route path="/" element={<Protected />}>
+  
+      <Route index element={<Home />} />
+      <Route path="home" element={<Home />} />
+      <Route path="instructor" element={<InstructorForm />} />
+      <Route path="createCourse" element={<CreateCourse />} />
+  
+  
+</Route>
+
+</>
       
-      </Route>
-      <Route
-        path="login"
-        element={<Login />}
-      
-      />
-      <Route
-        path="signup"
-        element={<Signup />}
-      />
-    
-    </Route>
   )
 );
 

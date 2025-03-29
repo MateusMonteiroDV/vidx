@@ -17,7 +17,7 @@ export default function InstructorForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+                                   
   
 
     try {
@@ -33,7 +33,7 @@ export default function InstructorForm() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-4xl font-bold">Create your course</CardTitle>
         <CardDescription className="text-lg">
-          Enter the course details and upload an image.
+          Enter the course details and upload an thumbnail.
         </CardDescription>
       </CardHeader>
       <CardContent className="p-6">
