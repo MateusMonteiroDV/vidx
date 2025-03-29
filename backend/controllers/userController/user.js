@@ -4,6 +4,10 @@ const jwt  = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../../models/knex/knex.js')
 const uuid = require('uuid')
+const { s3Client } = require('../../utils.js');
+const {PutObjectCommand} = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const { Upload } = require('@aws-sdk/lib-storage');
 
 
 module.exports = {
@@ -133,7 +137,6 @@ module.exports = {
 		const {id_user} = req.user
 		const {title_course, desc_course} = req.body.data
 		
-		const image_url = req.file.path
 		
 		if (!title_course || !desc_course) {
     		return res.status(400)
@@ -165,12 +168,27 @@ module.exports = {
     }
 
 		const admin = updatedUser[0]	
+		const fileName = `${Date.now()}-${req.file.originalname.replace(/\s+/g, '-')}`;
+		const s3Key = `thumb/${fileName}`			
+
+		const upload = new Upload({
+        client: s3Client,
+        params: {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: s3Key,
+          Body: req.file.buffer,
+          ContentType: req.file.mimetype,
+        },
+      });
+
+			 await upload.done();
+
 
 		const updatedCourse =await db('course').insert({
 			id_course: uuid.v4(),
 			title: title_course,
 			description:desc_course,
-			image: image_url,
+			image: s3Key,
 			id_user: admin.id_user,
 
 		}).returning('*')
@@ -184,9 +202,7 @@ module.exports = {
 		return res.status(200).json(
 			{
 				message:'Validation sucess',
-			    id_course: course.id_course,
-				title: course.title,
-				image: course.image || 'default_image_url'
+			  
 		})
 
 
