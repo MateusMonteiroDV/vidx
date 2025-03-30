@@ -43,7 +43,7 @@ export default function InstructorForm() {
       dispatch(addInstructorCourse(
            response.id_course));
       
-      dispatch(setInstructorCourses(defaultCourse))
+      dispatch(setInstructorCourses(defaulCourse))
 
       navigate("/createCourse")
 

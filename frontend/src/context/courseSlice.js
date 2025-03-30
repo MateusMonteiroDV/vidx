@@ -33,6 +33,6 @@ export default courseSlice.reducer;
 
 export const selectAllCourseIds = (state)=> state.course.instructorCourses
 
-export selectCurrentCourseId = (state)=> state.course.selectedCourse
+export const selectCurrentCourseId = (state)=> state.course.selectedCourse
 
 export const selectFirstCourseId =(state)=> state.course.instructorCourses[0];
