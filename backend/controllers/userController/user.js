@@ -134,8 +134,10 @@ module.exports = {
 	validateInstructorForm: async (req,res)=>{
 	try{	
 
+		console.log(req.data)
+				console.log(req.body.data)
 		const {id_user} = req.user
-		const {title_course, desc_course} = req.body.data
+		const {title_course, desc_course} = req.body
 		
 		
 		if (!title_course || !desc_course) {
@@ -202,7 +204,7 @@ module.exports = {
 		return res.status(200).json(
 			{
 				message:'Validation sucess',
-			  
+			  id_course: course.id_course
 		})
 
 

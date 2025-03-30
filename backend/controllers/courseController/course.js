@@ -8,7 +8,7 @@ const { Upload } = require('@aws-sdk/lib-storage');
 module.exports = {
   uploadingVideo: async (req, res) => {
     try {
-      const { title } = req.body.data;
+      const { id_course } = req.body;
       const { id_user } = req.user;
       const user = await db('user').where('id_user', id_user).first();
 
@@ -22,7 +22,7 @@ module.exports = {
 
       const course = await db('course')
         .where('id_user', id_user)
-        .andWhere('title', title.trim())
+        .andWhere('id_course', id_course)
         .first();
 
       if (!course) {

@@ -1,25 +1,39 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import authReducer from './context/authSlice.js'
-import {apiSlice} from './context/api/apiSlice.js'
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import authReducer from './context/authSlice.js';
+import courseReducer from './context/courseSlice.js';
+import { apiSlice } from './context/api/apiSlice.js';
 
-const persitedConfig= {
-  key:'root',
-  storage
+
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['token']
 }
+const coursePersistConfig = {
+  key: 'course',
+  storage,
+  whitelist: ['setInstructorCourses','addInstructorCourse','resetCourses'] 
+};
 
-const persiteReducer = persistReducer(persitedConfig,authReducer)
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistedCourseReducer = persistReducer(coursePersistConfig, courseReducer);
+
 const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
-    auth: persiteReducer,
+    auth: persistedAuthReducer,
+    course: persistedCourseReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
-    devTools:true
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE']
+      }
+    }).concat(apiSlice.middleware),
+  devTools: process.env.NODE_ENV !== 'production'
 });
 
 export const persistor = persistStore(store);
-
 export default store;
