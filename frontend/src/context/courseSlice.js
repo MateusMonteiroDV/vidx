@@ -29,3 +29,10 @@ const courseSlice = createSlice({
 
 export const { setInstructorCourses, addInstructorCourse, resetCourses } = courseSlice.actions;
 export default courseSlice.reducer;
+
+
+export const selectAllCourseIds = (state)=> state.course.instructorCourses
+
+export selectCurrentCourseId = (state)=> state.course.selectedCourse
+
+export const selectFirstCourseId =(state)=> state.course.instructorCourses[0];
