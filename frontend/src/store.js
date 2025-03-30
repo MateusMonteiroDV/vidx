@@ -14,7 +14,7 @@ const authPersistConfig = {
 const coursePersistConfig = {
   key: 'course',
   storage,
-  whitelist: ['setInstructorCourses','addInstructorCourse','resetCourses'] 
+  whitelist: ['instructorCourses','selectedCourse'] 
 };
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);

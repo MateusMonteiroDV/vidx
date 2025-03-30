@@ -63,7 +63,8 @@ module.exports = {
 	},
 
   login: async (req,res)=>{
-	try{
+	
+try{
 
 	const {email, password} = req.body
 
@@ -71,6 +72,7 @@ module.exports = {
 	const user = await db('user')
 			.where('email',email)
 			.returning('*')
+	
 	if(!user){
 		res.status(400).json({message:"User not found"})
 	}
@@ -134,8 +136,7 @@ module.exports = {
 	validateInstructorForm: async (req,res)=>{
 	try{	
 
-		console.log(req.data)
-				console.log(req.body.data)
+	
 		const {id_user} = req.user
 		const {title_course, desc_course} = req.body
 		
