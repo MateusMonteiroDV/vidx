@@ -11,8 +11,10 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import { addInstructorCourse } from "../../context/courseSlice.js";
+import {setInstructorCourses, addInstructorCourse } from "../../context/courseSlice.js";
 import { useFormInstructorMutation } from "../../context/courseApiSlice.js";
+import {selectFirstCourseId} from "../../context/courseSlice.js";
+import {useSelector} from "react-redux"
 
 export default function InstructorForm() {
   const [title, setTitle] = useState("");
@@ -21,6 +23,8 @@ export default function InstructorForm() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [formInstructor] = useFormInstructorMutation();
+
+  const defaulCourse = useSelector(selectFirstCourseId)
 
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
@@ -38,6 +42,8 @@ export default function InstructorForm() {
       console.log(response)
       dispatch(addInstructorCourse(
            response.id_course));
+      
+      dispatch(setInstructorCourses(defaultCourse))
 
       navigate("/createCourse")
 
