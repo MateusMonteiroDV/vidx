@@ -13,7 +13,7 @@ module.exports ={
 		jwt.verify(token, process.env.JWT_PASSWORD,(err,user)=>{
 			if(err){
 				console.log(err)
-				return res.status(404).json({message:'Unauthorized'})
+				return res.status(401).json({message:'Unauthorized'})
 
 			}
 

@@ -22,7 +22,8 @@ const courseSlice = createSlice({
     },
     
     resetCourses: (state) => {
-      state.selectedCourse = [];
+      state.selectedCourse = null;
+      state.instructorCourses = [];
     }
   }
 });
