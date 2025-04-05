@@ -12,6 +12,7 @@ import {
   CardContent,
 } from "../../components/ui/card";
 import {setInstructorCourses, addInstructorCourse } from "../../context/courseSlice.js";
+import {setAdmin } from "../../context/authSlice.js";
 import { useFormInstructorMutation } from "../../context/courseApiSlice.js";
 import {selectFirstCourseId} from "../../context/courseSlice.js";
 import {useSelector} from "react-redux"
@@ -42,7 +43,8 @@ export default function InstructorForm() {
       console.log(response)
       dispatch(addInstructorCourse(
            response.id_course));
-      
+      dispatch(setAdmin(true));
+
       dispatch(setInstructorCourses(defaulCourse))
 
       navigate("/createCourse")

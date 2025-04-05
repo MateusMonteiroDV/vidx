@@ -10,9 +10,16 @@ import {
   SidebarMenuItem,
 } from "../../components/ui/sidebar.js"
 
-export default function Home({ ...props }) {
+import {useSelector} from 'react-redux'
+import {selectCurrentAdmin} from '../../context/authSlice.js'
+
+export default function Home({ children }) {
+  const isAdmin = useSelector(selectCurrentAdmin)
+
   return (
-    <Sidebar variant="floating" {...props} className="h-full w-80 text-xl [&_*]:text-xl [&_button]:py-3 [&_a]:py-2 [&_.icon]:size-6">
+  <div className = "flex h-full">  
+    <Sidebar variant="sidebar"  
+        className="h-full w-80 text-xl [&_*]:text-xl [&_button]:py-3 [&_a]:py-2 [&_.icon]:size-6">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -32,10 +39,10 @@ export default function Home({ ...props }) {
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu className="gap-20">
+          <SidebarMenu className="gap-10">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/instructor" className="mt-5 flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                <a href="/" className="mt-5 flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
                   <LayoutDashboard className="size-5" />
                   <span>Home</span>
                 </a>
@@ -44,25 +51,40 @@ export default function Home({ ...props }) {
             
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/instructor/courses" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                <a href="/courses" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
                   <BookUser className="size-5" />
                   <span>Meus Cursos</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
             
+         {isAdmin?( 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/instructor/products" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                <a href="/produtos" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
                   <Box className="size-5" />
                   <span>Meus Produtos</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            
+           
+
+           ) : (
+           <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="instructor" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                  <Box className="size-5" />
+                  <span>Ser um instrutor</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+
+           ) 
+          }
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/instructor/profile" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                <a href="/profile" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
                   <User className="size-5" />
                   <span>Perfil</span>
                 </a>
@@ -72,5 +94,11 @@ export default function Home({ ...props }) {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+
+     <main className="flex-1 overflow-auto p-6">
+        {children}
+      </main>
+
+    </div>  
   );
 }

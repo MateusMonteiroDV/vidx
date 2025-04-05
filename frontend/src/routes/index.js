@@ -11,6 +11,7 @@ import Login from "../pages/loginPage";
 import Signup from "../pages/registrationPage";
 import InstructorForm from "../pages/formInstructor"
 import CreateCourse from "../pages/createCourse"
+import MainPage from "../pages/mainPage"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,8 +22,9 @@ const router = createBrowserRouter(
 
    <Route path="/" element={<Protected />}>
   
-      <Route index element={<Home />} />
-      <Route path="home" element={<Home />} />
+      <Route index element={<MainPage />} />
+      <Route path = "home" element={<MainPage />} />
+     
       <Route path="instructor" element={<InstructorForm />} />
       <Route path="createCourse" element={<CreateCourse />} />
   
