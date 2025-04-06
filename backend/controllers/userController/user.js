@@ -82,9 +82,13 @@ try{
 	const isValid = bcrypt.compare(password,newUser.password)		
 
 		if(!isValid){
+		
 		 res.status(400).json({message:'Passoword invalid'})
+		
 		}	
 		
+		 
+
 		const acessToken = jwt.sign({id_user:newUser.id_user },
 		 process.env.JWT_PASSWORD, 
 		 {expiresIn: '1h'})
@@ -98,7 +102,21 @@ try{
 				sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax'
 			})
 			
-			res.status(200).json({token:acessToken})
+		const user_course = await db('user_courses')
+		.where('id_user', newUser.id_user).first();
+
+		 if(!user_course){
+		 		return res.status(200).json({token:acessToken})
+
+
+		 } 
+
+		
+		 console.log(newUser.id_user);	
+			return res.status(200).json({token:acessToken,
+			 all_id_courses:user_course.all_ids_courses 
+
+			})
 
 
 
@@ -202,6 +220,32 @@ try{
 
 		const course = updatedCourse[0]
 
+		 const userCourses = await db('user_courses')
+		 .where('id_user', admin.id_user)
+		 .first();
+		 
+		 if(!userCourses){
+		 		await db('user_courses').insert({
+		 			id: uuid.v4(),
+		 			id_user: admin.id_user,
+		 			all_ids_courses: [course.id_course] 
+
+
+
+		 		})
+
+	} else {
+		
+		await db('user_courses')
+    	.where('id_user', admin.id_user)
+    	.update({
+     	 all_ids_courses: db.raw('array_append(all_ids_courses, ?)', [course.id_course])
+    });
+}
+	
+
+		 		
+		
 		return res.status(200).json(
 			{
 				message:'Validation sucess',

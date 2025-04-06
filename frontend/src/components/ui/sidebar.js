@@ -107,13 +107,15 @@ function SidebarProvider({
   return (
     <SidebarContext.Provider value={contextValue}>
       <TooltipProvider delayDuration={0}>
-      <div
-  className="fixed inset-y-0 z-10 hidden h-svh transition-[left,right,width] duration-200 ease-linear md:flex left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+var(--spacing-4)+2px)] w-[var(--sidebar-width)]"
-  style={{
-    '--sidebar-width': '200px', // or your desired width
-    '--sidebar-width-icon': '3rem', // example icon width
-    '--spacing-4': '1rem' // example spacing
-    }}
+        <div
+          data-slot="sidebar-wrapper"
+          style={
+            {
+              "--sidebar-width": SIDEBAR_WIDTH,
+              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              ...style
+            }
+          }
           className={cn(
             "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
             className
@@ -283,6 +285,8 @@ function SidebarInset({
         className
       )}
       {...props} />
+
+      
   );
 }
 

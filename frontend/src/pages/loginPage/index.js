@@ -42,7 +42,7 @@ const navigate = useNavigate()
     const response = await  login(body).unwrap()
     console.log(response)
     dispatch(setCredentials({ token: response.token }))
-
+    
     navigate('/home')
 
    } catch (error) {

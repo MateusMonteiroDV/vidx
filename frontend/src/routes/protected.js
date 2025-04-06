@@ -10,7 +10,7 @@ const Protected = () => {
 
   return token ? (
      <Home>
-      {<Outlet />}
+      { <Outlet />}
      </Home>
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
