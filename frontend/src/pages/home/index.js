@@ -61,7 +61,7 @@ export default function Home({ children }) {
          {isAdmin?( 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/produtos" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
+                <a href="myproducts" className="flex items-center gap-3 hover:bg-sidebar-accent/30 hover:text-sidebar-accent-foreground px-3 py-2 rounded transition-colors duration-200">
                   <Box className="size-5" />
                   <span>Meus Produtos</span>
                 </a>

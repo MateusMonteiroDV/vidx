@@ -9,7 +9,7 @@ import { apiSlice } from './context/api/apiSlice.js';
 const authPersistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['token']
+  whitelist: ['token', 'isAdmin']
 }
 const coursePersistConfig = {
   key: 'course',

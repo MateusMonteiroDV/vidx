@@ -12,6 +12,7 @@ import Signup from "../pages/registrationPage";
 import InstructorForm from "../pages/formInstructor"
 import CreateCourse from "../pages/createCourse"
 import MainPage from "../pages/mainPage"
+import ProductsPage from "../pages/productsPage"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route index element={<MainPage />} />
       <Route path = "home" element={<MainPage />} />
      
+      <Route path = "myproducts" element={<ProductsPage />} />
       <Route path="instructor" element={<InstructorForm />} />
       <Route path="createCourse" element={<CreateCourse />} />
   
