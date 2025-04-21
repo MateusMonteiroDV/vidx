@@ -47,8 +47,8 @@ const navigate = useNavigate()
 
 
     const response = await  login(body).unwrap()
-    console.log(response)
-    dispatch(addAllInstructorCourse(response.courses));
+    console.log(response);
+    dispatch(addAllInstructorCourse(response.course));
     dispatch(setCredentials({ token: response.token }))
     
     navigate('/home')

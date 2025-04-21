@@ -24,7 +24,7 @@ module.exports = {
 		const isExist= await db('user').where('email',email).first()
 
 		if(isExist){
-			res.status(400).json({message:'Email already exist'})
+			return res.status(400).json({message:'Email already exist'})
 
 		}	
 
@@ -104,17 +104,20 @@ try{
 			
 		const user_course = await db('user_courses')
 		.where('id_user', newUser.id_user).first();
-
-		 if(!user_course){
+		
+		
+		 
+		if(!user_course){
 		 		return res.status(200).json({token:acessToken})
 
 
 		 } 
 
 		
-		 console.log(newUser.id_user);	
-			return res.status(200).json({token:acessToken,
-			 all_id_courses:user_course.all_ids_courses 
+		
+			
+		return res.status(200).json({token:acessToken,
+			 course:user_course.all_ids_courses
 
 			})
 
