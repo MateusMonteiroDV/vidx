@@ -4,12 +4,14 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent }
 import { Label } from "../../components/ui/label.jsx";
 import { Input } from "../../components/ui/input.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {useNavigate} from 'react-router-dom'
 
 import {useDispatch} from 'react-redux'
-import {setCredentials} from "../../context/authSlice.js";
+import {setCredentials,setAdmin} from "../../context/authSlice.js";
+import {resetCourses} from "../../context/courseSlice.js";
 import {useRegistrationMutation} from "../../context/authApiSlice.js";
+
 
 export default function RegistrationPage() {
   const [name,setName] = useState('')
@@ -17,10 +19,22 @@ export default function RegistrationPage() {
   const [password, setPassword] = useState('');
   const [signup, { isLoading }] = useRegistrationMutation();
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  
+  useEffect(() => {
+    dispatch(resetCourses());
+    dispatch(setAdmin(false));
+}, [dispatch]);
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   function handleName(e){
   	setName(e.target.value)
   }
+
+
 
   function handleEmail(e) {
     setEmail(e.target.value);
@@ -30,7 +44,6 @@ export default function RegistrationPage() {
     setPassword(e.target.value);
   }
 
-  const navigate = useNavigate()
 
  async function handleSubmit(e) {
   e.preventDefault();
@@ -43,8 +56,9 @@ export default function RegistrationPage() {
 
   try {
     const response = await signup(body).unwrap(); 
-    dispatch(setCredentials({ token: response.token }));
     console.log(response);
+    dispatch(setCredentials({ token: response.token }));
+    
 
     navigate('/home');
    } catch (error) {

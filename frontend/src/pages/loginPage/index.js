@@ -4,19 +4,26 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent }
 import { Label } from "../../components/ui/label.jsx";
 import { Input } from "../../components/ui/input.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {useNavigate} from 'react-router-dom'
 
 import {useDispatch} from 'react-redux'
+import {addAllInstructorCourse,resetCourses} from "../../context/courseSlice.js";
 import {setCredentials} from "../../context/authSlice.js";
 import {useLoginMutation} from "../../context/authApiSlice.js";
 export default function RegistrationPage() {
  
+  
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [login] = useLoginMutation()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(resetCourses());
+}, [dispatch]);
 
   function handleEmail(e) {
     setEmail(e.target.value);
@@ -41,6 +48,7 @@ const navigate = useNavigate()
 
     const response = await  login(body).unwrap()
     console.log(response)
+    dispatch(addAllInstructorCourse(response.courses));
     dispatch(setCredentials({ token: response.token }))
     
     navigate('/home')

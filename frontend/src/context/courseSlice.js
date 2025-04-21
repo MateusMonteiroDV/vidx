@@ -18,7 +18,10 @@ const courseSlice = createSlice({
         
     },
     
-    
+    addAllInstructorCourse: (state, action) => {
+      state.instructorCourses = action.payload;
+    },
+
     addInstructorCourse: (state, action) => {
       state.instructorCourses.push(action.payload);
     },
@@ -30,7 +33,8 @@ const courseSlice = createSlice({
   }
 });
 
-export const { setInstructorCourses, addInstructorCourse, resetCourses } = courseSlice.actions;
+export const { setInstructorCourses, addAllInstructorCourse, addInstructorCourse, resetCourses } = courseSlice.actions;
+
 export default courseSlice.reducer;
 
 
