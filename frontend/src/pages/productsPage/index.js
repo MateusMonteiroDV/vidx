@@ -1,37 +1,33 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectAllCourseIds, setInstructorCourses } from "../../context/courseSlice";
-import { useGetMutation } from "../../context/courseApiSlice";
+import { useGetCourseQuery } from "../../context/courseApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function ProductsPage() {
-    const { getVideo } = useGetMutation();
+   
     const courseIds = useSelector(selectAllCourseIds);
 
     return (
         <div className="p-4">
             <ul className="space-y-4">
                 {courseIds.map((courseId) => (
-                    <Card key={courseId} courseId={courseId} getVideo={getVideo} />
+                    <Card key={courseId} courseId={courseId}  />
                 ))}
             </ul>
         </div>
     );
 }
 
-function Card({ courseId, getVideo }) {
-    const [course, setCourse] = useState(null);
+function Card({ courseId }) {
+    const { data:infoCourse, isLoading, error} = useGetCourseQuery(courseId);
+   if(infoCourse){
+    console.log(infoCourse)
+   }
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function fetchCourse() {
-            const data = await getVideo(courseId);
-            setCourse(data);
-        }
-        fetchCourse();
-    }, [courseId, getVideo]);
-
+ 
     const handleEdit = () => {
         dispatch(setInstructorCourses(courseId));
         navigate("createCourse");
@@ -41,13 +37,19 @@ function Card({ courseId, getVideo }) {
         console.log(`Deletar curso com ID: ${courseId}`);
     };
 
-    if (!course) {
+    if (isLoading) {
         return <li>Carregando...</li>;
+    }
+
+    if (error) {
+        return <li>Erro ao carregar o curso: {error.message}</li>;
     }
 
     return (
         <li className="flex items-center justify-between border p-4 rounded-lg shadow-md bg-white">
-            <span className="text-lg font-bold">{course.title}</span>
+            <span className="px-20 py-2 text-lg font-bold">
+    {infoCourse?.title || "Título não disponível"}
+</span>
             <div className="flex gap-2">
                 <button
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
