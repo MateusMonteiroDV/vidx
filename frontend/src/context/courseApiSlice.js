@@ -24,7 +24,13 @@ export const courseApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['CourseVideos']
     }),
     
-    
+    getCourse: builder.query({
+      query: (key) => ({
+        url: `api/course/${key}`,
+        method: "GET",
+      }),
+      providesTags: ['Course']
+    }),
     
   }),
 });
@@ -32,4 +38,5 @@ export const courseApiSlice = apiSlice.injectEndpoints({
 export const { 
   useFormInstructorMutation,
   useUploadingVideoMutation,
+  useGetCourseQuery,
 } = courseApiSlice;

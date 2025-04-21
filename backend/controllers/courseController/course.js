@@ -111,8 +111,17 @@ module.exports = {
       if(!course){
         return res.status(400).json({message: 'Course not found'});
       }
-     
-      return res.status(200).json({course});
+      
+      const Course = course[0]
+      const infoCourse = {
+        title: Course.title,
+        desc: Course.description,
+        image: Course.image
+
+      }
+      
+
+      return res.status(200).json(infoCourse);
 
 
     }catch(err){
@@ -130,6 +139,8 @@ module.exports = {
     const { id_user } = req.user;
 
     try {
+     
+
       const course = await db('course')
         .where('id_course', key)
         .andWhere('id_user', id_user)
