@@ -30,7 +30,7 @@ function Card({ courseId }) {
  
     const handleEdit = () => {
         dispatch(setInstructorCourses(courseId));
-        navigate("createCourse");
+        navigate("/createCourse");
     };
 
     const handleDelete = () => {
