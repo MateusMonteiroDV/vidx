@@ -97,4 +97,58 @@ module.exports = {
       return res.status(500).json({ message: 'Error from the server: ' + err.message });
     }
   },
+
+  getCourse:async (req,res) =>{
+    const {key} = req.params;
+    const {id_user} = req.user;
+    
+    try {
+      const course = await db('course')
+      .where('id_course',key)
+      db.andWhere('id_user',id_user)
+      .first();
+    
+      if(!course){
+        return res.status(400).json({message: 'Course not found'});
+      }
+     
+      return res.status(200).json({course});
+
+
+    }catch(err){
+      console.log(err);
+      return res.status(500).json({ message: 'Error from the server: ' + err.message });
+    }
+
+
+
+  },
+
+  
+  deleteCourse: async (req, res) => {
+    const { key } = req.params;
+    const { id_user } = req.user;
+
+    try {
+      const course = await db('course')
+        .where('id_course', key)
+        .andWhere('id_user', id_user)
+        .first();
+
+      if (!course) {
+        return res.status(400).json({ message: 'Course not found' });
+      }
+
+      await db('course').where('id_course', key).del();
+    
+      return res.status(200).json({ message: 'Course deleted successfully' });
+    
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error from the server: ' + err.message });
+    }
+  
+  
+  }
+
 };

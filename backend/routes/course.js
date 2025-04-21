@@ -6,6 +6,10 @@ const multer = require('multer')
 const {upload} = require('../middlewares/multerVideo.js')
 
 
+router.get('/course/:key',auth.authenticationJwt, course.getCourse);
+router.delete('/course/:key',auth.authenticationJwt, course.deleteCourse)
+
+
 router.get('/video/:key',auth.authenticationJwt, course.getVideo)
 router.delete('/video/:key', auth.authenticationJwt, course.deleteVideo)
 router.post('/uploadingVideo',
