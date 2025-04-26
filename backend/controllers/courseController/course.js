@@ -160,6 +160,54 @@ module.exports = {
     }
   
   
-  }
+  },
+  getAllCourses: async (req, res) => {  
+    
+    
+    
+    try{
+      const courses  = await db('course').select('id_course',
+         'title',
+          'image',
+        )
+      
+      const courseSignedUrl = await Promise.all(
+        courses.map(async (course) => {
+          try {
+            const commnad = new GetObjectCommand({
+              Bucket: process.env.AWS_BUCKET_NAME,
+              Key: `${course.image}`,
+            });
+
+            const preSignedUrl = await getSignedUrl(s3Client, commnad, { expiresIn: 10000 });
+
+            return {
+              ...course,
+              image: preSignedUrl,
+            };
+          } catch (err) {
+            console.log(err);
+            return {
+              ...course,
+              image: null
+            }
+          }
+        })
+      );
+      
+      return res.status(200).json(courseSignedUrl); 
+        
+       }catch(err){
+        
+        return res.status(500).json({ message: 'Error from the server: ' + err.message });
+    }
+      
+
+     
+
+
+  
+  
+  }   
 
 };

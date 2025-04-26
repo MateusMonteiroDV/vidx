@@ -193,8 +193,9 @@ try{
 
 		const admin = updatedUser[0]	
 		const fileName = `${Date.now()}-${req.file.originalname.replace(/\s+/g, '-')}`;
+		
 		const s3Key = `thumb/${fileName}`			
-
+		console.log('S3 Key:', s3Key);
 		const upload = new Upload({
         client: s3Client,
         params: {
@@ -207,7 +208,7 @@ try{
 
 			 await upload.done();
 
-
+	  
 		const updatedCourse =await db('course').insert({
 			id_course: uuid.v4(),
 			title: title_course,
@@ -216,6 +217,8 @@ try{
 			id_user: admin.id_user,
 
 		}).returning('*')
+
+		
 
 		if(!updatedCourse  || updatedCourse .length == 0){
 			return res.status(500).json({message:'Failed to create course'})
