@@ -7,9 +7,17 @@ import { useState, useEffect } from "react";
 export default function ProductsPage() {
    
     const courseIds = useSelector(selectAllCourseIds);
-
+    const navigate = useNavigate();
     return (
         <div className="p-4">
+           <button
+                className="my-2 px-2 py-2 text-lg text-white font-bold bg-green-500 rounded"
+                onClick={() => navigate('/instructor')}
+            
+            >
+             Create New Course   
+            </button>
+           
             <ul className="space-y-4">
                 {courseIds.map((courseId) => (
                     <Card key={courseId} courseId={courseId}  />
@@ -47,6 +55,9 @@ function Card({ courseId }) {
 
     return (
         <li className="flex items-center justify-between border p-4 rounded-lg shadow-md bg-white">
+             
+            
+            
             <span className="px-20 py-2 text-lg font-bold">
     {infoCourse?.title || "Título não disponível"}
 </span>
