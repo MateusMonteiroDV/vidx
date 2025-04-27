@@ -25,9 +25,9 @@ module.exports = {
 
       }
 
-    }
+    },
 
-    migrations:{
+    migration:{
       directory: './models/knex/migrations',
       schemaName: 'public',
     }
@@ -60,7 +60,7 @@ module.exports = {
       min: 2,
       max: 10
     },
-    migrations: {
+    migration: {
       tableName: 'knex_migrations'
     }
   }

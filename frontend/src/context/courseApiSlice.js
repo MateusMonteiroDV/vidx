@@ -31,6 +31,13 @@ export const courseApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Course']
     }),
+    getAllCourse: builder.query({
+      query: () => ({
+        url: `api/allCourses`,
+        method: "GET",
+      }),
+      providesTags: ['Course']
+    }),
     
   }),
 });
@@ -39,4 +46,5 @@ export const {
   useFormInstructorMutation,
   useUploadingVideoMutation,
   useGetCourseQuery,
+  useGetAllCourseQuery
 } = courseApiSlice;

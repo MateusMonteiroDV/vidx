@@ -12,14 +12,15 @@ const courseRouter = require('./routes/course.js')
 const auth = require('./middlewares/auth.js')
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL, 
+  origin: process.env.NODE_ENV === 'production'? process.env.CLIENT_URL: 'http://localhost:3000', 
   credentials: true, 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
 };
 
 
-process.env.NODE_ENV === 'production' ? app.use(cors(corsOptions)) : app.use(cors({ origin: '*' }));
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 
 
 
