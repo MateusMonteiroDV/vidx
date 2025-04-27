@@ -4,9 +4,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development node server.js"
   },
-  "author": "",
+  "author": "Mateus Monteiro",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.758.0",

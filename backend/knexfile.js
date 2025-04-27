@@ -15,6 +15,18 @@ module.exports = {
         password:process.env.DB_PASSWORD
     },
 
+    production:{
+      client: 'pg',
+      connection: {
+        host: process.env.DB_HOST_PRODUCTION,
+        database:process.env.DB_DATABASE_PRODUCTION,
+        user: process.env.DB_USER_PRODUCTION,
+        password:process.env.DB_PASSWORD_PRODUCTION
+
+      }
+
+    }
+
     migrations:{
       directory: './models/knex/migrations',
       schemaName: 'public',
