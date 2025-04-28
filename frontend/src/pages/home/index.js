@@ -2,12 +2,17 @@ import * as React from "react"
 import { BookUser, LayoutDashboard, User, Box } from "lucide-react"
 import {
   Sidebar,
+  SidebarTrigger,
   SidebarContent,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarProvider,
+  openMobile,
+  setOpenMobile,
+  useSidebar
 } from "../../components/ui/sidebar.js"
 
 import {useSelector} from 'react-redux'
@@ -15,11 +20,27 @@ import {selectCurrentAdmin} from '../../context/authSlice.js'
 
 export default function Home({ children }) {
   const isAdmin = useSelector(selectCurrentAdmin)
+  const {isMobile, openMobile,setOpenMobile} = useSidebar()
+  const defaultOpen = true;
 
-  return (
-  <div className = "flex h-full">  
-    <Sidebar variant="sidebar"  
-        className="h-full w-80 text-xl [&_*]:text-xl [&_button]:py-3 [&_a]:py-2 [&_.icon]:size-6">
+  console.log(openMobile)
+return (
+  <SidebarProvider  className = "flex h-screen  ">
+    
+   
+
+
+   <Sidebar
+
+   
+          variant="sidebar"
+          className={` md:block h-full w-60  text-xl [&_*]:text-xl [&_button]:py-3 [&_a]:py-2 [&_.icon]:size-6  z-50 relative `}
+          style={{ backgroundColor: "transparent" }} 
+       
+         
+        
+        >
+
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -94,11 +115,15 @@ export default function Home({ children }) {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-
-     <main className="flex-1 overflow-auto p-6">
+  
+        <main className=" z-0 flex-1 overflow-auto p-6 bg-transparent">
+        {isMobile && <SidebarTrigger  /> }
+        
         {children}
+      
       </main>
 
-    </div>  
+   
+ </SidebarProvider>
   );
 }
