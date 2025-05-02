@@ -26,8 +26,8 @@ if (error){
 
 
 return(
-		<main className="flex flex-row flex-wrap ">
-			<ul className="flex flex-row justify-around ">
+		<main className="flex  flex-wrap w-full max-w-screen  ">
+			<ul className="  flex flex-wrap w-full justify-around gap-4  ">
 			  {courses.map((course=> (
 				<Card  id = {course.id_course} title={course.title} image={course.image} />)))}	
 			
@@ -54,15 +54,15 @@ function handleClick(){
  return (
         <li
             key={id}
-            className="flex flex-col justify-between items-center rounded-lg shadow-md bg-white p-4 m-2"
+            className="flex flex-col justify-between items-center rounded-lg shadow-md bg-white p-4 m-2  w-[300px] max-w-full"
              
         >
             <img
                 src={image}
                 alt={title}
-                className="w-full h-32 object-cover rounded-lg mb-2"
+                className="w-full h-auto object-cover rounded-lg mb-2"
             />
-            <h2 className="text-lg font-bold">{title}</h2>
+            <h2 className = " text-center text-lg font-bold w-full truncate">{title}</h2>
            
 			<button className = "px-4 py-2 bg-green-500 text-white rounded-lg " onClick ={handleClick}> see course</button>
         </li>

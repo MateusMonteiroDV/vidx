@@ -25,7 +25,7 @@ export default function Home({ children }) {
 
   console.log(openMobile)
 return (
-  <SidebarProvider  className = "flex h-screen  ">
+  <SidebarProvider  className = "flex h-screen z-50 ">
     
    
 
@@ -117,7 +117,7 @@ return (
     </Sidebar>
   
         <main className=" z-0 flex-1 overflow-auto p-6 bg-transparent">
-        {isMobile && <SidebarTrigger  /> }
+        {isMobile && <SidebarTrigger className={ "bg-white"} /> }
         
         {children}
       

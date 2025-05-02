@@ -11,14 +11,14 @@ export default function ProductsPage() {
     return (
         <div className="p-4">
            <button
-                className="my-2 px-2 py-2 text-lg text-white font-bold bg-green-500 rounded"
+                className=" my-2 px-2 py-2 text-lg text-white font-bold bg-green-500 rounded"
                 onClick={() => navigate('/instructor')}
             
             >
              Create New Course   
             </button>
            
-            <ul className="space-y-4">
+            <ul className=" mx-auto space-y-4 overflow-y-auto max-w-screen-md">
                 {courseIds.map((courseId) => (
                     <Card key={courseId} courseId={courseId}  />
                 ))}
@@ -54,22 +54,22 @@ function Card({ courseId }) {
     }
 
     return (
-        <li className="flex items-center justify-between border p-4 rounded-lg shadow-md bg-white">
+        <li className="  flex  flex-col sm:flex-row items-center justify-between border p-4 rounded-lg shadow-md bg-white">
              
             
             
-            <span className="px-20 py-2 text-lg font-bold">
+            <span className="w-full  sm:w-auto py-2 text-lg truncate text-ellipsis overflow-hidden font-bold">
     {infoCourse?.title || "Título não disponível"}
 </span>
-            <div className="flex gap-2">
+            <div className=" flex flex-row gap-2">
                 <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={handleEdit}
                 >
                     Editar
                 </button>
                 <button
-                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                    className="w-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                     onClick={handleDelete}
                 >
                     Deletar

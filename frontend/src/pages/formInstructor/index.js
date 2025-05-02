@@ -57,7 +57,8 @@ export default function InstructorForm() {
   };
 
   return (
-    <Card className="mx-auto min-w-[500px] p-8">
+  <div clasName = "flex " > 
+    <Card className="mx-auto w-full p-8 max-w-[500px] h-auto max-h-screen overflow-y-auto sm:w-[90%] ">
       <CardHeader className="space-y-1">
         <CardTitle className="text-4xl font-bold">Create your course</CardTitle>
         <CardDescription className="text-lg">
@@ -112,5 +113,7 @@ export default function InstructorForm() {
         </form>
       </CardContent>
     </Card>
+ </div>
+ 
   );
 }
